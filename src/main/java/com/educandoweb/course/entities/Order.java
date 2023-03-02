@@ -1,5 +1,6 @@
 package com.educandoweb.course.entities;
 
+import com.educandoweb.course.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,6 +15,8 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Integer orderStatus;
+
     private Instant moment;
 
     @ManyToOne
@@ -23,13 +26,15 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Long id, Instant moment, User client) {
+    public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
+        super();
         this.id = id;
         this.moment = moment;
         this.client = client;
+        setOrderStatus(orderStatus);
     }
 
-    public Long getId() {
+        public Long getId() {
         return id;
     }
 
@@ -53,7 +58,18 @@ public class Order implements Serializable {
         this.client = client;
     }
 
-    @Override
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus);
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if (orderStatus != null) {
+            this.orderStatus = orderStatus.getCode();
+        }
+    }
+
+
+        @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
